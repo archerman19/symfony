@@ -22,6 +22,19 @@ class PostsController extends AbstractController {
 		$this->doctrine = $doctrine;
 	}
 
+	/**
+     * @Route("/posts/search", name="blog_search")
+     */
+	#[Route('/posts/search', name: 'blog_search')]
+    public function search(Request $request) {
+        $query = $request->query->get('q');
+        $posts = $this->postRepository->searchByQuery($query);
+
+        return $this->render('blog/query_post.html.twig', [
+            'posts' => $posts
+        ]);
+    }
+
 	#[Route('/posts', name: 'blog_posts')]
 	public function posts() {
 		$posts = $this->postRepository->findAll();
